@@ -1,0 +1,117 @@
+-- KeySystemUILib
+local KeySystemUILib = {}
+
+function KeySystemUILib:Init(config)
+	local Players = game:GetService("Players")
+	local player = Players.LocalPlayer
+
+	local validKey = config.Key or "default_key"
+	local getKeyURL = config.GetKeyLink or "https://example.com"
+	local onSuccess = config.OnSuccess or function() end
+
+	local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+	screenGui.Name = "KeySystemGUI"
+	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	local mainFrame = Instance.new("Frame", screenGui)
+	mainFrame.Name = "KeySystemUi"
+	mainFrame.Size = UDim2.new(0, 344, 0, 248)
+	mainFrame.Position = UDim2.new(0.28, 0, 0.06, 0)
+	mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 6)
+	Instance.new("UIStroke", mainFrame).Color = Color3.fromRGB(255, 255, 255)
+
+	local title = Instance.new("TextLabel", mainFrame)
+	title.Name = "TitleLabel"
+	title.Size = UDim2.new(0, 218, 0, 32)
+	title.Position = UDim2.new(0.18895, 0, 0.14113, 0)
+	title.BackgroundTransparency = 1
+	title.Text = "Welcome to SX Key System"
+	title.TextColor3 = Color3.fromRGB(255,255,255)
+	title.Font = Enum.Font.Gotham
+	title.TextScaled = true
+	Instance.new("UICorner", title)
+	Instance.new("UIStroke", title).Transparency = 0.1
+
+	local keyText = Instance.new("TextLabel", mainFrame)
+	keyText.Name = "KeyTextLabel"
+	keyText.Size = UDim2.new(0, 218, 0, 32)
+	keyText.Position = UDim2.new(0.18895, 0, 0.28629, 0)
+	keyText.BackgroundTransparency = 1
+	keyText.Text = "Key System"
+	keyText.TextColor3 = Color3.fromRGB(255,255,255)
+	keyText.Font = Enum.Font.Gotham
+	keyText.TextScaled = true
+	Instance.new("UICorner", keyText)
+	Instance.new("UIStroke", keyText).Transparency = 0.1
+
+	local keyBox = Instance.new("TextBox", mainFrame)
+	keyBox.Name = "EnterKeyBox"
+	keyBox.Size = UDim2.new(0, 258, 0, 40)
+	keyBox.Position = UDim2.new(0.125, 0, 0.48387, 0)
+	keyBox.PlaceholderText = "enter key here"
+	keyBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	keyBox.TextColor3 = Color3.fromRGB(0,0,0)
+	keyBox.TextScaled = true
+	keyBox.Font = Enum.Font.Gotham
+	Instance.new("UICorner", keyBox)
+
+	local checkKeyBtn = Instance.new("TextButton", mainFrame)
+	checkKeyBtn.Name = "CheckKeyButton"
+	checkKeyBtn.Size = UDim2.new(0, 104, 0, 34)
+	checkKeyBtn.Position = UDim2.new(0.53779, 0, 0.74194, 0)
+	checkKeyBtn.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	checkKeyBtn.TextColor3 = Color3.fromRGB(0,0,0)
+	checkKeyBtn.Text = "Check Key"
+	checkKeyBtn.Font = Enum.Font.Gotham
+	checkKeyBtn.TextSize = 15
+	Instance.new("UICorner", checkKeyBtn)
+
+	local getKeyBtn = Instance.new("TextButton", mainFrame)
+	getKeyBtn.Name = "GetKeyButton"
+	getKeyBtn.Size = UDim2.new(0, 104, 0, 34)
+	getKeyBtn.Position = UDim2.new(0.14535, 0, 0.74194, 0)
+	getKeyBtn.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	getKeyBtn.TextColor3 = Color3.fromRGB(0,0,0)
+	getKeyBtn.Text = "Get Key"
+	getKeyBtn.Font = Enum.Font.Gotham
+	getKeyBtn.TextSize = 15
+	Instance.new("UICorner", getKeyBtn)
+
+	local closeBtn = Instance.new("TextButton", mainFrame)
+	closeBtn.Name = "CloseButton"
+	closeBtn.Size = UDim2.new(0, 32, 0, 32)
+	closeBtn.Position = UDim2.new(0.87209, 0, 0.04839, 0)
+	closeBtn.Text = "X"
+	closeBtn.BackgroundTransparency = 1
+	closeBtn.TextColor3 = Color3.fromRGB(255,0,0)
+	closeBtn.Font = Enum.Font.Gotham
+	closeBtn.TextScaled = true
+	Instance.new("UICorner", closeBtn)
+	Instance.new("UIStroke", closeBtn).Color = Color3.fromRGB(255,0,0)
+
+	checkKeyBtn.MouseButton1Click:Connect(function()
+		if keyBox.Text == validKey then
+			keyText.Text = "✅ Key Correct!"
+			wait(1)
+			screenGui:Destroy()
+			onSuccess()
+		else
+			keyText.Text = "❌ Incorrect Key!"
+		end
+	end)
+
+	getKeyBtn.MouseButton1Click:Connect(function()
+		setclipboard(getKeyURL)
+		keyText.Text = "Link copied!"
+	end)
+
+	closeBtn.MouseButton1Click:Connect(function()
+		screenGui:Destroy()
+	end)
+end
+
+return KeySystemUILib
+ion()
+	screenGui:Destroy()
+end)
