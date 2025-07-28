@@ -112,6 +112,3 @@ function KeySystemUILib:Init(config)
 end
 
 return KeySystemUILib
-ion()
-	screenGui:Destroy()
-end)
