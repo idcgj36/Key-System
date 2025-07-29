@@ -1,0 +1,9 @@
+local KeySystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/idcgj36/Key-System/refs/heads/main/KeySystemUi.lua"))()
+
+KeySystem:Init({
+	Key = "SX-o5_idcgj36",
+	GetKeyLink = "https://huy8433.blogspot.com/?m=1",
+	OnSuccess = function()
+		-- Your script here
+	end
+})
