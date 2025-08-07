@@ -1,0 +1,132 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local KeySystem = {}
+
+function KeySystem:Init(config)
+	local correctKey = config.Key or "Zex"
+	local getKeyLink = config.GetKeyLink or "https://yourlink.com"
+	local onSuccess = config.OnSuccess or function() end
+	local iconId = config.Icon or ""
+
+	-- Tạo ScreenGui
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "ZexKeySystemUI"
+	screenGui.Parent = game:GetService("CoreGui")
+	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	-- Frame chính
+	local mainFrame = Instance.new("Frame")
+	mainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
+	mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	mainFrame.Parent = screenGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 10)
+	corner.Parent = mainFrame
+
+	-- IconImage
+	local iconImage = Instance.new("ImageLabel")
+	iconImage.Name = "IconImage"
+	iconImage.Size = UDim2.new(0.2, 0, 0.5, 0)
+	iconImage.Position = UDim2.new(0.75, 0, 0.1, 0)
+	iconImage.BackgroundColor3 = Color3.fromRGB(41, 41, 41)
+	iconImage.BorderSizePixel = 0
+	iconImage.Image = iconId
+	iconImage.Parent = mainFrame
+
+	local iconCorner = Instance.new("UICorner")
+	iconCorner.CornerRadius = UDim.new(0, 6)
+	iconCorner.Parent = iconImage
+
+	-- Tiêu đề
+	local title = Instance.new("TextLabel")
+	title.Text = "Zex Key System"
+	title.Size = UDim2.new(0.7, 0, 0.2, 0)
+	title.BackgroundTransparency = 1
+	title.TextColor3 = Color3.new(1, 1, 1)
+	title.TextScaled = true
+	title.Font = Enum.Font.GothamBold
+	title.Parent = mainFrame
+
+	-- TextBox nhập key
+	local keyBox = Instance.new("TextBox")
+	keyBox.PlaceholderText = "Enter Key Here"
+	keyBox.Size = UDim2.new(0.7, 0, 0.15, 0)
+	keyBox.Position = UDim2.new(0.05, 0, 0.3, 0)
+	keyBox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+	keyBox.TextScaled = true
+	keyBox.Font = Enum.Font.Gotham
+	keyBox.Parent = mainFrame
+
+	-- Label thông báo
+	local notiLabel = Instance.new("TextLabel")
+	notiLabel.Size = UDim2.new(0.7, 0, 0.1, 0)
+	notiLabel.Position = UDim2.new(0.05, 0, 0.46, 0)
+	notiLabel.BackgroundTransparency = 1
+	notiLabel.Text = ""
+	notiLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	notiLabel.TextScaled = true
+	notiLabel.Font = Enum.Font.Gotham
+	notiLabel.Parent = mainFrame
+
+	-- Nút Check Key
+	local checkButton = Instance.new("TextButton")
+	checkButton.Text = "Check Key"
+	checkButton.Size = UDim2.new(0.35, 0, 0.15, 0)
+	checkButton.Position = UDim2.new(0.55, 0, 0.65, 0)
+	checkButton.BackgroundColor3 = Color3.fromRGB(70, 130, 70)
+	checkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	checkButton.TextScaled = true
+	checkButton.Font = Enum.Font.Gotham
+	checkButton.Parent = mainFrame
+
+	-- Nút Get Key
+	local getKeyButton = Instance.new("TextButton")
+	getKeyButton.Text = "Get Key"
+	getKeyButton.Size = UDim2.new(0.35, 0, 0.15, 0)
+	getKeyButton.Position = UDim2.new(0.1, 0, 0.65, 0)
+	getKeyButton.BackgroundColor3 = Color3.fromRGB(50, 50, 100)
+	getKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	getKeyButton.TextScaled = true
+	getKeyButton.Font = Enum.Font.Gotham
+	getKeyButton.Parent = mainFrame
+
+	-- Nút Đóng UI
+	local closeButton = Instance.new("TextButton")
+	closeButton.Text = "×"
+	closeButton.Size = UDim2.new(0.1, 0, 0.15, 0)
+	closeButton.Position = UDim2.new(0.9, -10, 0, 10)
+	closeButton.BackgroundTransparency = 1
+	closeButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+	closeButton.TextScaled = true
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Parent = mainFrame
+
+	-- Sự kiện các nút
+	checkButton.MouseButton1Click:Connect(function()
+		if keyBox.Text == correctKey then
+			notiLabel.Text = "✅ Key Correct!"
+			task.wait(1)
+			screenGui:Destroy()
+			onSuccess()
+		else
+			notiLabel.Text = "❌ Invalid Key!"
+		end
+	end)
+
+	getKeyButton.MouseButton1Click:Connect(function()
+		setclipboard(getKeyLink)
+		notiLabel.Text = "Link copied to clipboard!"
+	end)
+
+	closeButton.MouseButton1Click:Connect(function()
+		screenGui:Destroy()
+	end)
+end
+
+return KeySystem
